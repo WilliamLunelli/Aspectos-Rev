@@ -1,35 +1,16 @@
-import express from 'express';
-import { createContact, deleteContact, getContacts } from '../services/contact';
+import express from "express";
+import {
+  createContactController,
+  deleteContactController,
+  getContactsController,
+} from "../controller/contactController";
 
 const router = express.Router();
 
-router.post('/contato', async (req, res) => {
-    const { name } = req.body;
+router.post("/contato", createContactController);
 
-    if (!name || name.length < 2) {
-        return res.json({ error: 'Nome precisa ter pelo menos 2 caracteres.' });
-    }
+router.get("/contatos", getContactsController);
 
-    await createContact(name);
-
-    res.status(201).json({ contato: name });
-});
-
-router.get('/contatos', async (req, res) => {
-    let list = await getContacts();
-    res.json({ contatos: list });
-});
-
-router.delete('/contato', async (req, res) => {
-    const { name } = req.query;
-
-    if (!name) {
-        return res.json({ error: 'Precisa mandar um nome para excluir.' });
-    }
-
-    await deleteContact(name as string);
-
-    res.json({ contato: name });
-});
+router.delete("/contato", deleteContactController);
 
 export default router;
