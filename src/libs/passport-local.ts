@@ -1,5 +1,15 @@
 import { Strategy as LocalStrategy } from "passport-local";
 import { createUserToken, findUserByEmailAndPassword } from "../services/user";
+import { User } from "../../types/user";
+import { RequestHandler } from "express";
+import passport from "passport";
+
+type LocalStrategyResponse = {
+  auth: {
+    token: string;
+  };
+  user: User;
+};
 
 export const localStrategy = new LocalStrategy(
   {
@@ -7,13 +17,10 @@ export const localStrategy = new LocalStrategy(
     passwordField: "password",
   },
   async (email, password, done) => {
-    console.log("email:", email);
-    console.log("password:", password);
-
     const user = await findUserByEmailAndPassword(email, password);
     if (user) {
       const token = createUserToken(user);
-      const response = {
+      const response: LocalStrategyResponse = {
         auth: {
           token,
         },
@@ -26,3 +33,18 @@ export const localStrategy = new LocalStrategy(
     }
   }
 );
+
+export const localStrategyAuth: RequestHandler = (req, res, next) => {
+  const authRequest = passport.authenticate(
+    "local",
+    (err: any, auth: LocalStrategyResponse | undefined) => {
+      if (auth) {
+        req.user = auth.user;
+        req.authInfo = auth.auth;
+        return next();
+      }
+      return res.status(401).json({ error: "Acesso negado" });
+    }
+  );
+  authRequest(req, res, next);
+};
