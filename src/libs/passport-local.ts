@@ -37,7 +37,7 @@ export const localStrategy = new LocalStrategy(
 export const localStrategyAuth: RequestHandler = (req, res, next) => {
   const authRequest = passport.authenticate(
     "local",
-    (err: any, auth: LocalStrategyResponse | undefined) => {
+    (err: any, auth: LocalStrategyResponse | false) => {
       if (auth) {
         req.user = auth.user;
         req.authInfo = auth.auth;
