@@ -8,10 +8,14 @@ import { privateRequest } from "../middlewares/auth";
 import { localStrategyAuth } from "../libs/passport-local";
 import { BearerStrategyAuth } from "../libs/passport-bearer";
 import { jwtStrategyAuth } from "../libs/passport-jwt";
+import multer from "multer";
 
 const router = express.Router();
+const upload = multer({
+  dest: "uploads/",
+});
 
-router.post("/contato", privateRequest, createContactController);
+router.post("/contato", upload.single("Photo"), createContactController);
 
 router.get("/contatos", getContactsController);
 
