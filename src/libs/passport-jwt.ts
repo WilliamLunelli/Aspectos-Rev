@@ -31,4 +31,5 @@ export const jwtStrategyAuth: RequestHandler = (req, res, next) => {
       return res.status(401).json({ error: "Acesso negado" });
     }
   );
+  authRequest(req, res, next);
 };
