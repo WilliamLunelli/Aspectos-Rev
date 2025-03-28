@@ -9,13 +9,17 @@ export const getContactsController: RequestHandler = async (req, res) => {
 export const createContactController: RequestHandler = async (req, res) => {
   const { name } = req.body;
 
+  if (!req.file || (req.file && !req.file.mimetype.includes("image"))) {
+    return res.json({ error: "Nenhuma imagem recebida" });
+  }
+
   if (!name || name.length < 2) {
     return res.json({ error: "Nome precisa ter pelo menos 2 caracteres." });
   }
 
   await createContact(name);
 
-  res.status(201).json({ contato: name });
+  res.status(201).json({ contato: name, Photo: req.file.filename });
 };
 
 export const deleteContactController: RequestHandler = async (req, res) => {
