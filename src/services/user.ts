@@ -25,7 +25,7 @@ export const createUserJWT = (user: User) => {
     id: user.id,
   };
   return jwt.sign(payload, process.env.JWT_KEY as string, {
-    expiresIn: "1 minute",
+    expiresIn: "1 day",
   });
 };
 

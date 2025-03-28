@@ -1,7 +1,7 @@
+import "dotenv/config";
 import express from "express";
 import helmet from "helmet";
 import router from "./routes";
-import "dotenv/config";
 import passport from "passport";
 import { localStrategy } from "./libs/passport-local";
 import { StrategyBearer } from "./libs/passport-bearer";
