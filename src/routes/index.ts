@@ -7,6 +7,7 @@ import {
 import { privateRequest } from "../middlewares/auth";
 import { localStrategyAuth } from "../libs/passport-local";
 import { BearerStrategyAuth } from "../libs/passport-bearer";
+import { jwtStrategyAuth } from "../libs/passport-jwt";
 
 const router = express.Router();
 
@@ -25,6 +26,10 @@ router.post("/login", localStrategyAuth, async (req, res) => {
 
 router.get("/private", BearerStrategyAuth, async (req, res) => {
   res.json({ msg: "Acessou!" });
+});
+
+router.get("/privatejwt", jwtStrategyAuth, async (req, res) => {
+  res.json({ msg: "Acessou JWT!" });
 });
 
 export default router;

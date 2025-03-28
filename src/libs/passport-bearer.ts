@@ -3,7 +3,6 @@ import { findUserByToken } from "../services/user";
 import { RequestHandler } from "express";
 import passport from "passport";
 import { User } from "../../types/user";
-import { json } from "stream/consumers";
 
 export const StrategyBearer = new BearerStrategy(async (token, done) => {
   console.log("token", token);
